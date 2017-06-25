@@ -1,40 +1,54 @@
 import 'dart:html';
 import 'dragon.dart';
 
+import 'palette.dart';
 import 'tablebuilder.dart';
 import 'designer.dart';
 
 class Editor {
 
-  final HtmlElement parent = querySelector('#output');
-  final TableBuilder palette = new TableBuilder(9, 1);
   final TableBuilder editorGrid = new TableBuilder(32, 16);
 
   final ButtonElement clearScreenButton = new ButtonElement();
   final ButtonElement hideGridButton = new ButtonElement();
 
-  void build() {
+  final DivElement screenBorder = new DivElement();
+  final DivElement toolbar = new DivElement();
+
+  void build(HtmlElement parent) {
     clearScreenButton.text = "CLS";
     hideGridButton.text = "GRID";
+
     clearScreenButton.onClick.listen((MouseEvent e) =>
         clearScreen(Designer.colorBack));
     hideGridButton.onClick.listen((MouseEvent e) =>
         toggleGrid());
-    buildPalette();
-    parent.append(new BRElement());
-    parent.append(clearScreenButton);
-    parent.append(hideGridButton);
-    parent.append(new BRElement());
-    buildMainGrid();
+
+    screenBorder
+      ..style.backgroundColor = 'black'
+      ..style.borderRadius = '6px'
+      ..style.padding = '40px'
+      ..style.width = '550px';
+
+    parent.append(toolbar);
+    parent.append(screenBorder);
+
+    buildPalette(toolbar);
+
+    //toolbar.append(new BRElement())
+    toolbar..append(clearScreenButton)
+      ..append(hideGridButton);
+      //..append(new BRElement());
+
+    buildMainGrid(screenBorder);
   }
 
-  void buildPalette() {
-    palette
-      ..build(parent)
-      ..applyAll(setColor)..applyAll(colorSelect);
+  void buildPalette(HtmlElement parent) {
+    Palette paletteF = new Palette(parent);
+    Palette paletteB = new Palette(parent);
   }
 
-  void buildMainGrid() {
+  void buildMainGrid(DivElement parent) {
     editorGrid
       ..build(parent)
       ..applyAll(setTitle)..applyAll(clickHandler);
@@ -53,12 +67,6 @@ class Editor {
     });
   }
 
-  void colorSelect(int x, int y, TableCellElement tc) {
-    tc.onClick.listen((MouseEvent e) {
-      Designer.color = x;
-    });
-  }
-
   void clickHandler(int x, int y, TableCellElement tc) {
     tc.onClick.listen((MouseEvent e) {
       tc.style.backgroundColor = Colors[Designer.color];
@@ -71,18 +79,8 @@ class Editor {
     tc.style.height = "20px";
   }
 
-  void setColor(int x, int y, TableCellElement tc) {
-    tc.style.backgroundColor = Colors[x];
-    tc.style.width = "15px";
-    tc.style.height = "20px";
-  }
-
   void toggleGrid() {
-    if (Designer.gridDisplayed) {
-      editorGrid.setCellSpacing(0);
-    } else {
-      editorGrid.setCellSpacing(1);
-    }
+    editorGrid.setCellSpacing(Designer.gridDisplayed ? 0 : 1);
     Designer.gridDisplayed = !Designer.gridDisplayed;
   }
 }

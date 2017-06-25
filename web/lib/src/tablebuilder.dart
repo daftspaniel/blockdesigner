@@ -48,4 +48,10 @@ class TableBuilder {
     table.style.border = border;
   }
 
+  void clearText() {
+    _listAll.forEach((TableCellElement tce) {
+      tce.innerHtml = '';
+    });
+  }
+
 }
