@@ -2,17 +2,12 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:html';
+import 'lib/src/dragon.dart';
+import 'lib/src/editor.dart';
 import 'lib/src/tablebuilder.dart';
+import 'lib/src/designer.dart';
+
 
 void main() {
-  querySelector('#output').text = 'Your Dart app is running.';
-  TableBuilder tb = new TableBuilder(32, 16);
-  tb.build(querySelector('#output'));
-  tb.applyAll(setTitle);
-}
-
-void setTitle(int x, int y, TableCellElement tc) {
-  tc.title = "$x $y";
-  tc.text = "$x $y";
-  print("$x $y");
+  buildEditor();
 }

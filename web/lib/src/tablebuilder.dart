@@ -21,18 +21,12 @@ class TableBuilder {
 
       for (int colX = 0; colX < _width; colX++) {
         TableCellElement cell = row.insertCell(colX);
-        cell.text = "[$colX $rowY]";
         _listAll.add(cell);
         _gridAll[rowY].add(cell);
       }
     }
 
-    parent
-        .
-    append
-      (
-        table
-    );
+    parent.append(table);
   }
 
   void applyAll(Function action) {
