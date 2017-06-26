@@ -11,36 +11,54 @@ class Editor {
 
   final ButtonElement clearScreenButton = new ButtonElement();
   final ButtonElement hideGridButton = new ButtonElement();
+  final ButtonElement githubButton = new ButtonElement();
+  final ButtonElement helpButton = new ButtonElement();
+  final ButtonElement generateCodeButton = new ButtonElement();
 
   final DivElement screenBorder = new DivElement();
   final DivElement toolbar = new DivElement();
 
   void build(HtmlElement parent) {
+    buildScreenBorder();
+
+    buildToolbar();
+    buildMainGrid(screenBorder);
+
+    parent..append(toolbar)..append(new BRElement())..append(
+        new BRElement())..append(screenBorder);
+  }
+
+  void buildScreenBorder() {
+    screenBorder
+      ..style.backgroundColor = 'black'
+      ..style.borderRadius = '6px'
+      ..style.padding = '40px'
+      ..style.width = '550px';
+  }
+
+  void buildToolbar() {
     clearScreenButton.text = "CLS";
     hideGridButton.text = "GRID";
+    githubButton.text = "GITHUB";
+    helpButton.text = "HELP";
+    generateCodeButton.text = "CODE...";
 
     clearScreenButton.onClick.listen((MouseEvent e) =>
         clearScreen(Designer.colorBack));
     hideGridButton.onClick.listen((MouseEvent e) =>
         toggleGrid());
 
-    screenBorder
-      ..style.backgroundColor = 'black'
+    toolbar
+      ..style.backgroundColor = 'lightblue'
       ..style.borderRadius = '6px'
-      ..style.padding = '40px'
+      ..style.padding = '5px'
       ..style.width = '550px';
 
-    parent.append(toolbar);
-    parent.append(screenBorder);
 
     buildPalette(toolbar);
 
-    //toolbar.append(new BRElement())
-    toolbar..append(clearScreenButton)
-      ..append(hideGridButton);
-      //..append(new BRElement());
-
-    buildMainGrid(screenBorder);
+    toolbar..append(clearScreenButton)..append(hideGridButton)..append(
+        githubButton)..append(helpButton)..append(generateCodeButton);
   }
 
   void buildPalette(HtmlElement parent) {

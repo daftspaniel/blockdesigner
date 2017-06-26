@@ -16,11 +16,16 @@ class Palette {
     tc.style.backgroundColor = Colors[x];
     tc.style.width = "15px";
     tc.style.height = "20px";
+    if (x == 0) {
+      tc.style.color = 'white';
+    }
   }
 
   void colorSelect(int x, int y, TableCellElement tc) {
     tc.onClick.listen((MouseEvent e) {
       Designer.color = x;
+      palette.clearText();
+      tc.text = "X";
     });
   }
 }
