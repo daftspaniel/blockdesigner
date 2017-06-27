@@ -2,8 +2,8 @@ import 'dart:html';
 
 class TableBuilder {
 
-  int _width = 8;
-  int _height = 8;
+  final int _width;
+  final int _height;
 
   final List<TableCellElement> _listAll = new List<TableCellElement>();
   final List<List<TableCellElement>> _gridAll = new List<
@@ -12,20 +12,28 @@ class TableBuilder {
 
   List<TableCellElement> get all => _listAll;
 
+  TableCellElement cell(int x, int y) => _gridAll[x][y];
+
   TableBuilder(this._width, this._height);
 
-  void build(DivElement parent) {
-    table.style.borderSpacing = '1px';
-
+  void build(HtmlElement parent) {
     for (int rowY = 0; rowY < _height; rowY++) {
       TableRowElement row = table.insertRow(rowY);
+
       for (int colX = 0; colX < _width; colX++) {
         TableCellElement cell = row.insertCell(colX);
-        if (rowY == 0) {
-          _gridAll.add(new List<TableCellElement>());
-        }
-        _gridAll[colX].add(cell);
         _listAll.add(cell);
+      }
+    }
+
+    _gridAll.clear();
+
+    for (int colX = 0; colX < _width; colX++) {
+      List<TableCellElement> gridColumn = new List<TableCellElement>();
+      _gridAll.add(gridColumn);
+
+      for (int rowY = 0; rowY < _height; rowY++) {
+        gridColumn.add(_listAll[colX + (rowY * _width)]);
       }
     }
 
@@ -33,8 +41,8 @@ class TableBuilder {
   }
 
   void applyAll(Function action) {
-    for (int rowY = 0; rowY < _height; rowY++) {
-      for (int colX = 0; colX < _width; colX++) {
+    for (int colX = 0; colX < _width; colX++) {
+      for (int rowY = 0; rowY < _height; rowY++) {
         action(colX, rowY, _gridAll[colX][rowY]);
       }
     }
@@ -52,6 +60,10 @@ class TableBuilder {
     _listAll.forEach((TableCellElement tce) {
       tce.innerHtml = '';
     });
+  }
+
+  void info() {
+    print("Grid length ${_gridAll.length}");
   }
 
 }

@@ -1,30 +1,22 @@
 import 'dart:html';
 import 'dragon.dart';
-
-import 'palette.dart';
-import 'tablebuilder.dart';
+import 'toolbar.dart';
+import 'util/tablebuilder.dart';
 import 'designer.dart';
 
 class Editor {
 
   final TableBuilder editorGrid = new TableBuilder(32, 16);
-
-  final ButtonElement clearScreenButton = new ButtonElement();
-  final ButtonElement hideGridButton = new ButtonElement();
-  final ButtonElement githubButton = new ButtonElement();
-  final ButtonElement helpButton = new ButtonElement();
-  final ButtonElement generateCodeButton = new ButtonElement();
-
   final DivElement screenBorder = new DivElement();
-  final DivElement toolbar = new DivElement();
+  final Toolbar toolbar = new Toolbar();
 
   void build(HtmlElement parent) {
     buildScreenBorder();
 
-    buildToolbar();
     buildMainGrid(screenBorder);
+    toolbar.build(parent, clearScreen, toggleGrid);
 
-    parent..append(toolbar)..append(new BRElement())..append(
+    parent..append(new BRElement())..append(
         new BRElement())..append(screenBorder);
   }
 
@@ -36,41 +28,12 @@ class Editor {
       ..style.width = '550px';
   }
 
-  void buildToolbar() {
-    clearScreenButton.text = "CLS";
-    hideGridButton.text = "GRID";
-    githubButton.text = "GITHUB";
-    helpButton.text = "HELP";
-    generateCodeButton.text = "CODE...";
-
-    clearScreenButton.onClick.listen((MouseEvent e) =>
-        clearScreen(Designer.colorBack));
-    hideGridButton.onClick.listen((MouseEvent e) =>
-        toggleGrid());
-
-    toolbar
-      ..style.backgroundColor = 'lightblue'
-      ..style.borderRadius = '6px'
-      ..style.padding = '5px'
-      ..style.width = '550px';
-
-
-    buildPalette(toolbar);
-
-    toolbar..append(clearScreenButton)..append(hideGridButton)..append(
-        githubButton)..append(helpButton)..append(generateCodeButton);
-  }
-
-  void buildPalette(HtmlElement parent) {
-    Palette paletteF = new Palette(parent);
-    Palette paletteB = new Palette(parent);
-  }
-
   void buildMainGrid(DivElement parent) {
     editorGrid
       ..build(parent)
-      ..applyAll(setTitle)..applyAll(clickHandler);
+      ..applyAll(setTile)..applyAll(clickHandler);
     clearScreen(Designer.colorBack);
+    editorGrid.setCellSpacing(0);
 
     window.onKeyDown.listen((KeyboardEvent e) {
       if (e.keyCode > 48 && e.keyCode < 58) {
@@ -91,7 +54,7 @@ class Editor {
     });
   }
 
-  void setTitle(int x, int y, TableCellElement tc) {
+  void setTile(int x, int y, TableCellElement tc) {
     tc.title = "$x $y";
     tc.style.width = "15px";
     tc.style.height = "20px";

@@ -1,12 +1,12 @@
 import 'dart:html';
 import 'designer.dart';
 import 'dragon.dart';
-import 'tablebuilder.dart';
+import 'util/tablebuilder.dart';
 
 class Palette {
   final TableBuilder palette = new TableBuilder(9, 1);
 
-  Palette(DivElement parent) {
+  Palette(HtmlElement parent) {
     palette
       ..build(parent)
       ..applyAll(setColor)..applyAll(colorSelect);
