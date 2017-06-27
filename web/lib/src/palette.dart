@@ -1,6 +1,7 @@
 import 'dart:html';
 import 'designer.dart';
 import 'dragon.dart';
+import 'events.dart';
 import 'util/tablebuilder.dart';
 
 class Palette {
@@ -26,6 +27,7 @@ class Palette {
       Designer.color = x;
       palette.clearText();
       tc.text = "X";
+      AppEvents.bus.post("BACK_CHANGE");
     });
   }
 }

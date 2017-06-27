@@ -2,11 +2,13 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:html';
-import'lib/src/editor.dart';
+import 'lib/src/designer.dart';
+import 'lib/src/editor.dart';
 
 final Editor editor = new Editor();
 final HtmlElement parent = querySelector('#output');
 
 void main() {
   editor.build(parent);
+  Designer.init();
 }

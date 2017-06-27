@@ -1,12 +1,14 @@
 import 'dart:html';
 import 'designer.dart';
+import 'events.dart';
 import 'palette.dart';
 import 'util/tablebuilder.dart';
 
 class Toolbar {
 
-  final TableBuilder layout = new TableBuilder(3, 3);
+  final TableBuilder layout = new TableBuilder(5, 1);
   final DivElement toolbar = new DivElement();
+
   final ButtonElement clearScreenButton = new ButtonElement();
   final ButtonElement hideGridButton = new ButtonElement();
   final ButtonElement githubButton = new ButtonElement();
@@ -16,7 +18,7 @@ class Toolbar {
   Palette paletteForeground;
   Palette paletteBackground;
 
-  void build(DivElement parent, Function clearScreen, Function toggleGrid) {
+  void build(HtmlElement parent, Function clearScreen, Function toggleGrid) {
     layout.build(parent);
     buildButtons(clearScreen, toggleGrid);
 
@@ -49,13 +51,23 @@ class Toolbar {
 
 
   void buildPalettes() {
-    layout.cell(0, 1).append(new SpanElement()..text = 'Foreground :');
-    paletteForeground = new Palette(layout.cell(0, 1));
+    layout.table.style.backgroundColor = "yellow";
 
-    layout.cell(0, 2).append(new SpanElement()..text = 'Background :');
-    paletteBackground = new Palette(layout.cell(0, 2));
+    layout.cell(0, 0).append(makeSpan('Foreground :'));
+    paletteForeground = new Palette(layout.cell(1, 0));
+
+    layout.cell(2, 0).style.width = "100px";
+
+    layout.cell(3, 0).append(makeSpan('Background :'));
+    paletteBackground = new Palette(layout.cell(4, 0));
 
     paletteForeground.palette.all[Designer.color].text = "X";
     paletteBackground.palette.all[Designer.colorBack].text = "X";
   }
+
+
+
+  SpanElement makeSpan(String text) =>
+      new SpanElement()
+        ..text = text;
 }
