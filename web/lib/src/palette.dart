@@ -6,8 +6,10 @@ import 'util/tablebuilder.dart';
 
 class Palette {
   final TableBuilder palette = new TableBuilder(9, 1);
+  final String changeEventName;
+  int index;
 
-  Palette(HtmlElement parent) {
+  Palette(this.changeEventName, HtmlElement parent) {
     palette
       ..build(parent)
       ..applyAll(setColor)..applyAll(colorSelect);
@@ -24,10 +26,13 @@ class Palette {
 
   void colorSelect(int x, int y, TableCellElement tc) {
     tc.onClick.listen((MouseEvent e) {
-      Designer.color = x;
+      index = x;
       palette.clearText();
       tc.text = "X";
-      AppEvents.bus.post("BACK_CHANGE");
+      AppEvents.bus.post(changeEventName, () {
+        return x;
+      });
     });
   }
+
 }

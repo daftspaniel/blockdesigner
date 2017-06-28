@@ -25,6 +25,8 @@ class Editor {
       ..style.backgroundColor = 'black'
       ..style.borderRadius = '6px'
       ..style.padding = '40px'
+      ..style.paddingTop = '60px'
+      ..style.paddingBottom = '60px'
       ..style.width = '550px';
   }
 
@@ -55,7 +57,7 @@ class Editor {
   }
 
   void setTile(int x, int y, TableCellElement tc) {
-    tc.title = "$x $y";
+    tc.title = "@${x+y*32} [$x $y]";
     tc.style.width = "15px";
     tc.style.height = "20px";
   }

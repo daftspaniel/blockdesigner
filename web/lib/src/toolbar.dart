@@ -1,6 +1,5 @@
 import 'dart:html';
 import 'designer.dart';
-import 'events.dart';
 import 'palette.dart';
 import 'util/tablebuilder.dart';
 
@@ -20,19 +19,25 @@ class Toolbar {
 
   void build(HtmlElement parent, Function clearScreen, Function toggleGrid) {
     layout.build(parent);
-    buildButtons(clearScreen, toggleGrid);
 
+    buildPalettes();
+
+    layout.table.style
+      ..padding = '5px'
+      ..borderRadius = '6px';
+
+    buildButtons(clearScreen, toggleGrid);
     toolbar.style
       ..backgroundColor = 'lightblue'
       ..border = "1px solid darkorange"
       ..borderRadius = '6px'
       ..padding = '5px'
-      ..width = '550px';
+      ..width = '600px';
 
-    buildPalettes();
 
     toolbar..append(clearScreenButton)..append(hideGridButton)..append(
         githubButton)..append(helpButton)..append(generateCodeButton);
+    parent.append(new BRElement());
     parent.append(toolbar);
   }
 
@@ -43,28 +48,36 @@ class Toolbar {
     helpButton.text = "HELP";
     generateCodeButton.text = "CODE...";
 
-    clearScreenButton.onClick.listen((MouseEvent e) =>
-        clearScreen(Designer.colorBack));
+    clearScreenButton.onClick.listen((MouseEvent e) {
+      if (window.confirm("Are you sure?")) {
+        clearScreen(Designer.colorBack);
+      }
+    });
+
     hideGridButton.onClick.listen((MouseEvent e) =>
         toggleGrid());
+
+    githubButton.onClick.listen((MouseEvent e) =>
+        window.open("https://github.com/daftspaniel/blockdesigner", 'git'));
   }
 
-
   void buildPalettes() {
-    layout.table.style.backgroundColor = "yellow";
+    layout.table.style.backgroundColor = "gray";
 
     layout.cell(0, 0).append(makeSpan('Foreground :'));
-    paletteForeground = new Palette(layout.cell(1, 0));
+    paletteForeground = new Palette("ForeChange", layout.cell(1, 0));
 
-    layout.cell(2, 0).style.width = "100px";
+    layout
+        .cell(2, 0)
+        .style
+        .width = "50px";
 
     layout.cell(3, 0).append(makeSpan('Background :'));
-    paletteBackground = new Palette(layout.cell(4, 0));
+    paletteBackground = new Palette("BackChange", layout.cell(4, 0));
 
     paletteForeground.palette.all[Designer.color].text = "X";
     paletteBackground.palette.all[Designer.colorBack].text = "X";
   }
-
 
 
   SpanElement makeSpan(String text) =>

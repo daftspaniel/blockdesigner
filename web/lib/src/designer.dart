@@ -6,11 +6,15 @@ class Designer {
   static bool gridDisplayed = false;
 
   static init() {
-    AppEvents.bus.subscribe("BACK_CHANGE", setBack);
+    AppEvents.bus.subscribe("ForeChange", setFore);
+    AppEvents.bus.subscribe("BackChange", setBack);
   }
 
-  static setBack() {
-    print("SETBACK");
-    colorBack = 5;
+  static void setFore(Function dataProvider) {
+    color = dataProvider();
+  }
+
+  static void setBack(Function dataProvider) {
+    colorBack = dataProvider();
   }
 }
