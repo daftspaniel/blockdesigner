@@ -13,6 +13,11 @@ class Palette {
     palette
       ..build(parent)
       ..applyAll(setColor)..applyAll(colorSelect);
+
+    AppEvents.bus.subscribe(changeEventName, (Function dataprovider) {
+      palette.clearText();
+      palette.all[dataprovider()].text = 'X';
+    });
   }
 
   void setColor(int x, int y, TableCellElement tc) {

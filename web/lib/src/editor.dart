@@ -1,5 +1,6 @@
 import 'dart:html';
 import 'dragon.dart';
+import 'events.dart';
 import 'toolbar.dart';
 import 'util/tablebuilder.dart';
 import 'designer.dart';
@@ -24,9 +25,9 @@ class Editor {
     screenBorder
       ..style.backgroundColor = 'black'
       ..style.borderRadius = '6px'
-      ..style.padding = '40px'
-      ..style.paddingTop = '60px'
-      ..style.paddingBottom = '60px'
+      ..style.padding = '60px'
+      ..style.paddingTop = '40px'
+      ..style.paddingBottom = '40px'
       ..style.width = '550px';
   }
 
@@ -38,8 +39,11 @@ class Editor {
     editorGrid.setCellSpacing(0);
 
     window.onKeyDown.listen((KeyboardEvent e) {
+      String event = e.ctrlKey ? EventNames.BackChange : EventNames.ForeChange;
       if (e.keyCode > 48 && e.keyCode < 58) {
-        Designer.color = e.keyCode - 49;
+        AppEvents.bus.post(event, () {
+          return e.keyCode - 49;
+        });
       }
     });
   }
@@ -54,10 +58,14 @@ class Editor {
     tc.onClick.listen((MouseEvent e) {
       tc.style.backgroundColor = Colors[Designer.color];
     });
+    tc.onContextMenu.listen((MouseEvent e) {
+      tc.style.backgroundColor = Colors[Designer.colorBack];
+      e.preventDefault();
+    });
   }
 
   void setTile(int x, int y, TableCellElement tc) {
-    tc.title = "@${x+y*32} [$x $y]";
+    tc.title = "@${x + y * 32} [$x $y]";
     tc.style.width = "15px";
     tc.style.height = "20px";
   }

@@ -6,8 +6,8 @@ class Designer {
   static bool gridDisplayed = false;
 
   static init() {
-    AppEvents.bus.subscribe("ForeChange", setFore);
-    AppEvents.bus.subscribe("BackChange", setBack);
+    AppEvents.bus.subscribe(EventNames.ForeChange, setFore);
+    AppEvents.bus.subscribe(EventNames.BackChange, setBack);
   }
 
   static void setFore(Function dataProvider) {
