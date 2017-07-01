@@ -34,7 +34,7 @@ class Editor {
   void buildMainGrid(DivElement parent) {
     editorGrid
       ..build(parent)
-      ..applyAll(setTile)..applyAll(clickHandler);
+      ..applyAll(setTile)..applyAll(mouseEventsHandler);
     clearScreen(Designer.colorBack);
     editorGrid.setCellSpacing(0);
 
@@ -54,7 +54,7 @@ class Editor {
     });
   }
 
-  void clickHandler(int x, int y, TableCellElement tc) {
+  void mouseEventsHandler(int x, int y, TableCellElement tc) {
     tc.onClick.listen((MouseEvent e) {
       tc.style.backgroundColor = Colors[Designer.color];
     });
@@ -62,7 +62,16 @@ class Editor {
       tc.style.backgroundColor = Colors[Designer.colorBack];
       e.preventDefault();
     });
+    tc.onMouseEnter.listen((MouseEvent e) {
+      if (e.buttons == 1) {
+        tc.style.backgroundColor = Colors[Designer.color];
+      } else if (e.buttons == 2) {
+        tc.style.backgroundColor = Colors[Designer.colorBack];
+      }
+      e.preventDefault();
+    });
   }
+
 
   void setTile(int x, int y, TableCellElement tc) {
     tc.title = "@${x + y * 32} [$x $y]";
