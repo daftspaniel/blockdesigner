@@ -1,8 +1,7 @@
 import 'dart:html';
-import 'designer.dart';
-import 'dragon.dart';
-import 'events.dart';
-import 'util/tablebuilder.dart';
+import '../dragon.dart';
+import '../events.dart';
+import '../util/tablebuilder.dart';
 
 class Palette {
   final TableBuilder palette = new TableBuilder(9, 1);

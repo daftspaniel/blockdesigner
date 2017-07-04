@@ -1,7 +1,7 @@
 import 'dart:html';
 import 'dragon.dart';
 import 'events.dart';
-import 'toolbar.dart';
+import 'gui/toolbar.dart';
 import 'util/tablebuilder.dart';
 import 'designer.dart';
 

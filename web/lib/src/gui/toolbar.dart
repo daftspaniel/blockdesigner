@@ -1,8 +1,8 @@
 import 'dart:html';
-import 'designer.dart';
-import 'events.dart';
+import '../designer.dart';
+import '../events.dart';
 import 'palette.dart';
-import 'util/tablebuilder.dart';
+import '../util/tablebuilder.dart';
 
 class Toolbar {
 
@@ -34,7 +34,6 @@ class Toolbar {
       ..padding = '5px'
       ..borderRadius = '6px';
 
-
     toolbar.style
       ..backgroundColor = 'lightblue'
       ..border = "1px solid darkorange"
@@ -64,6 +63,8 @@ class Toolbar {
 
     githubButton.onClick.listen((MouseEvent e) =>
         window.open("https://github.com/daftspaniel/blockdesigner", 'git'));
+
+    helpButton.onClick.listen((MouseEvent e) => helpHandler());
   }
 
   void buildPalettes() {
@@ -87,4 +88,27 @@ class Toolbar {
   SpanElement makeSpan(String text) =>
       new SpanElement()
         ..text = text;
+
+  void helpHandler() {
+
+    DivElement helpbox = new DivElement();
+    helpbox.style.position = 'absolute';
+    helpbox.style.top = '0px';
+    helpbox.style.left = '0px';
+    helpbox.style.width = '100%';
+    helpbox.style.height = '300px';
+    helpbox.style.backgroundColor = 'whitesmoke';
+    helpbox.style.borderBottom = '4px black solid';
+    helpbox.style.padding = '5px';
+    helpbox.style.paddingLeft = '25px';
+    helpbox.innerHtml = "<h1>Help</h1>";
+    helpbox.innerHtml += "<p>Press keys 1-9 to change Foreground Color.</p>";
+    helpbox.innerHtml += "<p>Left Mouse Button : Foreground.</p>";
+    helpbox.innerHtml += "<p>Right Mouse Button : Background.</p>";
+    helpbox.innerHtml += "<p>Hold Mouse Buttons to paint multiple blocks.</p>";
+    DivElement xbutton = new DivElement();
+    helpbox.append(xbutton);
+    xbutton.innerHtml = 'X';
+    document.body.append(helpbox);
+  }
 }
