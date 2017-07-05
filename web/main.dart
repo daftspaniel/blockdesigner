@@ -11,4 +11,5 @@ final HtmlElement parent = querySelector('#output');
 void main() {
   editor.build(parent);
   Designer.init();
+  Designer.editor = editor;
 }

@@ -1,3 +1,4 @@
+import 'editor.dart';
 import 'events.dart';
 
 class Designer {
@@ -17,4 +18,6 @@ class Designer {
   static void setBack(Function dataProvider) {
     colorBack = dataProvider();
   }
+
+  static Editor editor;
 }

@@ -1,6 +1,7 @@
 import 'dart:html';
 import '../designer.dart';
 import '../events.dart';
+import 'gui.dart';
 import 'palette.dart';
 import '../util/tablebuilder.dart';
 
@@ -65,6 +66,7 @@ class Toolbar {
         window.open("https://github.com/daftspaniel/blockdesigner", 'git'));
 
     helpButton.onClick.listen((MouseEvent e) => helpHandler());
+    generateCodeButton.onClick.listen((MouseEvent e) => codeHandler());
   }
 
   void buildPalettes() {
@@ -84,31 +86,79 @@ class Toolbar {
     paletteBackground.palette.all[Designer.colorBack].text = "X";
   }
 
-
-  SpanElement makeSpan(String text) =>
-      new SpanElement()
-        ..text = text;
-
   void helpHandler() {
+    DivElement helpbox = createUIBox();
+    helpbox
+      ..innerHtml = "<h1>Help</h1>"
+      ..innerHtml += "<p>Press keys 1-9 to change Foreground Color.</p>"
+      ..innerHtml += "<p>Left Mouse Button : Foreground.</p>"
+      ..innerHtml += "<p>Right Mouse Button : Background.</p>"
+      ..innerHtml += "<p>Hold Mouse Buttons to paint multiple blocks.</p>";
 
-    DivElement helpbox = new DivElement();
-    helpbox.style.position = 'absolute';
-    helpbox.style.top = '0px';
-    helpbox.style.left = '0px';
-    helpbox.style.width = '100%';
-    helpbox.style.height = '300px';
-    helpbox.style.backgroundColor = 'whitesmoke';
-    helpbox.style.borderBottom = '4px black solid';
-    helpbox.style.padding = '5px';
-    helpbox.style.paddingLeft = '25px';
-    helpbox.innerHtml = "<h1>Help</h1>";
-    helpbox.innerHtml += "<p>Press keys 1-9 to change Foreground Color.</p>";
-    helpbox.innerHtml += "<p>Left Mouse Button : Foreground.</p>";
-    helpbox.innerHtml += "<p>Right Mouse Button : Background.</p>";
-    helpbox.innerHtml += "<p>Hold Mouse Buttons to paint multiple blocks.</p>";
-    DivElement xbutton = new DivElement();
-    helpbox.append(xbutton);
-    xbutton.innerHtml = 'X';
+    addCloseButton(helpbox);
     document.body.append(helpbox);
+  }
+
+  void codeHandler() {
+    DivElement codebox = createUIBox();
+    codebox.innerHtml = "<h1>Code</h1>";
+    codebox.innerHtml += "<pre>${makeCode()}</pre>";
+    codebox.style.height = "75%";
+
+    addCloseButton(codebox);
+    document.body.append(codebox);
+  }
+
+  String makeCode() {
+    String program = "";
+    int lineno = 500;
+    int y, i, AT;
+    TableCellElement TD;
+
+    for (y = 0; y < 16; y++) {
+      program = program + "\r\n$lineno DATA ";
+      for (i = 0; i < 32; i++) {
+        AT = ((y * 32) + i);
+        TD = Designer.editor.editorGrid.cell(i, y);
+
+        String col = TD.style.backgroundColor;
+        if (col == "rgb(0, 0, 0)") {
+          program = program + "128";
+        }
+        else if (col == "rgb(0, 255, 0)") {
+          program = program + "143";
+        }
+        else if (col == "rgb(255, 255, 0)") {
+          program = program + "159";
+        }
+        else if (col == "rgb(0, 0, 255)") {
+          program = program + "175";
+        }
+        else if (col == "rgb(255, 0, 0)") {
+          program = program + "191";
+        }
+        else if (col == "rgb(255, 255, 255)") {
+          program = program + "207";
+        }
+        else if (col == "rgb(0, 255, 255)") {
+          program = program + "223";
+        }
+        else if (col == "rgb(255, 0, 255)") {
+          program = program + "239";
+        }
+        else if (col == "rgb(255, 165, 0)") {
+          program = program + "255";
+        }
+        if (i != 31) program = program + ",";
+      }
+      lineno = lineno + 10;
+    }
+
+    String progend = "\r\n";
+    String progstart = '10 CLEAR2000:CLS\r\n20 FOR T=1024 TO 1535\r\n30 READ A:POKE T,A\r\n';
+    progstart = progstart +
+        '90 NEXT T\r\n100 A\$=INKEY\$:IFA\$="" AND A\$<>"-" THEN100\r\n999 END";';
+
+    return progstart + program + progend;
   }
 }
