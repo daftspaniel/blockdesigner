@@ -1,3 +1,5 @@
+import '../dragon.dart';
+import 'charpalette.dart';
 import 'dart:html';
 import '../designer.dart';
 import '../events.dart';
@@ -9,6 +11,7 @@ class Toolbar {
 
   final TableBuilder layout = new TableBuilder(5, 1);
   final DivElement toolbar = new DivElement();
+  final DivElement charbar = new DivElement();
 
   final ButtonElement clearScreenButton = new ButtonElement();
   final ButtonElement hideGridButton = new ButtonElement();
@@ -18,16 +21,20 @@ class Toolbar {
 
   Palette paletteForeground;
   Palette paletteBackground;
+  CharPalette paletteChars;
 
   void build(HtmlElement parent, Function clearScreen, Function toggleGrid) {
+    parent.append(toolbar);
     layout.build(parent);
 
     buildPalettes();
     buildButtons(clearScreen, toggleGrid);
+
     styleElements();
 
     parent.append(new BRElement());
-    parent.append(toolbar);
+
+    parent.append(charbar);
   }
 
   void styleElements() {
@@ -36,6 +43,13 @@ class Toolbar {
       ..borderRadius = '6px';
 
     toolbar.style
+      ..backgroundColor = 'lightblue'
+      ..border = "1px solid darkorange"
+      ..borderRadius = '6px'
+      ..padding = '5px'
+      ..width = '600px';
+
+    charbar.style
       ..backgroundColor = 'lightblue'
       ..border = "1px solid darkorange"
       ..borderRadius = '6px'
@@ -84,6 +98,8 @@ class Toolbar {
 
     paletteForeground.palette.all[Designer.color].text = "X";
     paletteBackground.palette.all[Designer.colorBack].text = "X";
+
+    paletteChars = new CharPalette(EventNames.ForeChange, charbar);
   }
 
   void helpHandler() {
@@ -109,46 +125,20 @@ class Toolbar {
     document.body.append(codebox);
   }
 
+
   String makeCode() {
     String program = "";
     int lineno = 500;
-    int y, i, AT;
-    TableCellElement TD;
+    TableCellElement td;
 
-    for (y = 0; y < 16; y++) {
+    for (int y = 0; y < 16; y++) {
       program = program + "\r\n$lineno DATA ";
-      for (i = 0; i < 32; i++) {
-        AT = ((y * 32) + i);
-        TD = Designer.editor.editorGrid.cell(i, y);
+      for (int i = 0; i < 32; i++) {
+        td = Designer.editor.editorGrid.cell(i, y);
 
-        String col = TD.style.backgroundColor;
-        if (col == "rgb(0, 0, 0)") {
-          program = program + "128";
-        }
-        else if (col == "rgb(0, 255, 0)") {
-          program = program + "143";
-        }
-        else if (col == "rgb(255, 255, 0)") {
-          program = program + "159";
-        }
-        else if (col == "rgb(0, 0, 255)") {
-          program = program + "175";
-        }
-        else if (col == "rgb(255, 0, 0)") {
-          program = program + "191";
-        }
-        else if (col == "rgb(255, 255, 255)") {
-          program = program + "207";
-        }
-        else if (col == "rgb(0, 255, 255)") {
-          program = program + "223";
-        }
-        else if (col == "rgb(255, 0, 255)") {
-          program = program + "239";
-        }
-        else if (col == "rgb(255, 165, 0)") {
-          program = program + "255";
-        }
+        String col = td.style.backgroundColor;
+
+        program += colorChar[col];
         if (i != 31) program = program + ",";
       }
       lineno = lineno + 10;
@@ -157,7 +147,7 @@ class Toolbar {
     String progend = "\r\n";
     String progstart = '10 CLEAR2000:CLS\r\n20 FOR T=1024 TO 1535\r\n30 READ A:POKE T,A\r\n';
     progstart = progstart +
-        '90 NEXT T\r\n100 A\$=INKEY\$:IFA\$="" AND A\$<>"-" THEN100\r\n999 END";';
+        '90 NEXT T\r\n100 A\$=INKEY\$:IFA\$="" THEN100\r\n999 END';
 
     return progstart + program + progend;
   }
