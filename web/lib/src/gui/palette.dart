@@ -11,7 +11,8 @@ class Palette {
   Palette(this.changeEventName, HtmlElement parent) {
     palette
       ..build(parent)
-      ..applyAll(setColor)..applyAll(colorSelect);
+      ..applyAll(setColor)
+      ..applyAll(colorSelect);
 
     AppEvents.bus.subscribe(changeEventName, (Function dataprovider) {
       palette.clearText();
@@ -38,5 +39,4 @@ class Palette {
       });
     });
   }
-
 }

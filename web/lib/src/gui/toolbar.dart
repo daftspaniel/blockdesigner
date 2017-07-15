@@ -8,7 +8,6 @@ import 'palette.dart';
 import '../util/tablebuilder.dart';
 
 class Toolbar {
-
   final TableBuilder layout = new TableBuilder(5, 1);
   final DivElement toolbar = new DivElement();
   final DivElement charbar = new DivElement();
@@ -58,8 +57,12 @@ class Toolbar {
   }
 
   void buildButtons(Function clearScreen, Function toggleGrid) {
-    toolbar..append(clearScreenButton)..append(hideGridButton)..append(
-        githubButton)..append(helpButton)..append(generateCodeButton);
+    toolbar
+      ..append(clearScreenButton)
+      ..append(hideGridButton)
+      ..append(githubButton)
+      ..append(helpButton)
+      ..append(generateCodeButton);
 
     clearScreenButton.text = "CLS";
     hideGridButton.text = "GRID";
@@ -73,8 +76,7 @@ class Toolbar {
       }
     });
 
-    hideGridButton.onClick.listen((MouseEvent e) =>
-        toggleGrid());
+    hideGridButton.onClick.listen((MouseEvent e) => toggleGrid());
 
     githubButton.onClick.listen((MouseEvent e) =>
         window.open("https://github.com/daftspaniel/blockdesigner", 'git'));
@@ -85,10 +87,7 @@ class Toolbar {
 
   void buildPalettes() {
     layout.table.style.backgroundColor = "gray";
-    layout
-        .cell(2, 0)
-        .style
-        .width = "50px";
+    layout.cell(2, 0).style.width = "50px";
 
     layout.cell(0, 0).append(makeSpan('Foreground :'));
     paletteForeground = new Palette(EventNames.ForeChange, layout.cell(1, 0));
@@ -125,7 +124,6 @@ class Toolbar {
     document.body.append(codebox);
   }
 
-
   String makeCode() {
     String program = "";
     int lineno = 500;
@@ -145,9 +143,10 @@ class Toolbar {
     }
 
     String progend = "\r\n";
-    String progstart = '10 CLEAR2000:CLS\r\n20 FOR T=1024 TO 1535\r\n30 READ A:POKE T,A\r\n';
-    progstart = progstart +
-        '90 NEXT T\r\n100 A\$=INKEY\$:IFA\$="" THEN100\r\n999 END';
+    String progstart =
+        '10 CLEAR2000:CLS\r\n20 FOR T=1024 TO 1535\r\n30 READ A:POKE T,A\r\n';
+    progstart =
+        progstart + '90 NEXT T\r\n100 A\$=INKEY\$:IFA\$="" THEN100\r\n999 END';
 
     return progstart + program + progend;
   }

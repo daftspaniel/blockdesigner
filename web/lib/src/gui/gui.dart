@@ -31,7 +31,4 @@ void addCloseButton(DivElement targetbox) {
   xbutton.onClick.listen((MouseEvent e) => targetbox.remove());
 }
 
-
-SpanElement makeSpan(String text) =>
-    new SpanElement()
-      ..text = text;
+SpanElement makeSpan(String text) => new SpanElement()..text = text;

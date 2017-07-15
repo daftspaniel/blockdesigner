@@ -1,13 +1,12 @@
 import 'dart:html';
 
 class TableBuilder {
-
   final int _width;
   final int _height;
 
   final List<TableCellElement> _listAll = new List<TableCellElement>();
-  final List<List<TableCellElement>> _gridAll = new List<
-      List<TableCellElement>>();
+  final List<List<TableCellElement>> _gridAll =
+      new List<List<TableCellElement>>();
   final TableElement table = new TableElement();
 
   List<TableCellElement> get all => _listAll;
@@ -65,5 +64,4 @@ class TableBuilder {
   void info() {
     print("Grid length ${_gridAll.length}");
   }
-
 }

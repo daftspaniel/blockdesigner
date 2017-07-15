@@ -6,7 +6,6 @@ import 'util/tablebuilder.dart';
 import 'designer.dart';
 
 class Editor {
-
   final TableBuilder editorGrid = new TableBuilder(32, 16);
   final DivElement screenBorder = new DivElement();
   final Toolbar toolbar = new Toolbar();
@@ -17,8 +16,10 @@ class Editor {
     buildMainGrid(screenBorder);
     toolbar.build(parent, clearScreen, toggleGrid);
 
-    parent..append(new BRElement())..append(
-        new BRElement())..append(screenBorder);
+    parent
+      ..append(new BRElement())
+      ..append(new BRElement())
+      ..append(screenBorder);
   }
 
   void buildScreenBorder() {
@@ -34,7 +35,8 @@ class Editor {
   void buildMainGrid(DivElement parent) {
     editorGrid
       ..build(parent)
-      ..applyAll(setTile)..applyAll(mouseEventsHandler);
+      ..applyAll(setTile)
+      ..applyAll(mouseEventsHandler);
     clearScreen(Designer.colorBack);
     editorGrid.setCellSpacing(0);
 
@@ -71,7 +73,6 @@ class Editor {
       e.preventDefault();
     });
   }
-
 
   void setTile(int x, int y, TableCellElement tc) {
     tc.title = "@${x + y * 32} [$x $y]";
