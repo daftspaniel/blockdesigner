@@ -25,6 +25,8 @@ class CharPalette {
       chars.add(ic);
       setBlockCharacter(ic, pattern[i]);
     }
+
+    highlightSelection();
   }
 
   void subscribeToEvents() {
@@ -38,8 +40,12 @@ class CharPalette {
     AppEvents.bus.subscribe(EventNames.BlockChange, (Function dataprovider) {
       palette.all[Designer.characterIndex].style.border = '';
       Designer.characterIndex = dataprovider();
-      palette.all[Designer.characterIndex].style.border = '2px solid yellow';
+      highlightSelection();
     });
+  }
+
+  void highlightSelection() {
+    palette.all[Designer.characterIndex].style.border = '2px solid yellow';
   }
 
   void setBlockCharacter(TableBuilder chars, String block) {

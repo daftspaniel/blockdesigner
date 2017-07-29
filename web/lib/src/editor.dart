@@ -69,6 +69,7 @@ class Editor {
     tc.onMouseEnter.listen((MouseEvent e) {
       if (e.buttons == 1) {
         tc.style.backgroundColor = Colors[Designer.color];
+        tc.text = "128";
       } else if (e.buttons == 2) {
         tc.style.backgroundColor = Colors[Designer.colorBack];
       }
@@ -80,6 +81,7 @@ class Editor {
     tc.title = "@${x + y * 32} [$x $y]";
     tc.style.width = "12px";
     tc.style.height = "24px";
+    tc.style.fontSize = "0px";
   }
 
   void toggleGrid() {
