@@ -17,19 +17,20 @@ class Editor {
     toolbar.build(parent, clearScreen, toggleGrid);
 
     parent
-      ..append(new BRElement())
-      ..append(new BRElement())
       ..append(screenBorder);
   }
 
   void buildScreenBorder() {
     screenBorder
+      ..style.position = 'absolute'
+      ..style.top = '70px'
+      ..style.left = '30px'
       ..style.backgroundColor = 'black'
       ..style.borderRadius = '6px'
       ..style.padding = '60px'
       ..style.paddingTop = '40px'
       ..style.paddingBottom = '40px'
-      ..style.width = '550px';
+      ..style.width = '460px';
   }
 
   void buildMainGrid(DivElement parent) {
@@ -77,8 +78,8 @@ class Editor {
 
   void setTile(int x, int y, TableCellElement tc) {
     tc.title = "@${x + y * 32} [$x $y]";
-    tc.style.width = "15px";
-    tc.style.height = "20px";
+    tc.style.width = "12px";
+    tc.style.height = "24px";
   }
 
   void toggleGrid() {

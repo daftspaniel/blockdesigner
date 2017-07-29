@@ -42,27 +42,38 @@ class Toolbar {
       ..borderRadius = '6px';
 
     toolbar.style
+      ..position = 'absolute'
+      ..top = '80px'
+      ..left = '640px'
       ..backgroundColor = 'lightblue'
       ..border = "1px solid darkorange"
       ..borderRadius = '6px'
       ..padding = '5px'
-      ..width = '600px';
+      ..width = '140px';
 
     charbar.style
       ..backgroundColor = 'lightblue'
       ..border = "1px solid darkorange"
       ..borderRadius = '6px'
       ..padding = '5px'
-      ..width = '600px';
+      ..width = '600px'
+      ..position = 'absolute'
+      ..top = '585px'
+      ..left = '20px';
   }
 
   void buildButtons(Function clearScreen, Function toggleGrid) {
     toolbar
       ..append(clearScreenButton)
       ..append(hideGridButton)
+      ..append(new BRElement())
+      ..append(new BRElement())
+      ..append(generateCodeButton)
+      ..append(new BRElement())
+      ..append(new BRElement())
+      ..append(new BRElement())
       ..append(githubButton)
-      ..append(helpButton)
-      ..append(generateCodeButton);
+      ..append(helpButton);
 
     clearScreenButton.text = "CLS";
     hideGridButton.text = "GRID";
@@ -133,16 +144,15 @@ class Toolbar {
 
   String makeCode() {
     String program = "";
-    int lineno = 500;
+    int lineno = 5000;
     TableCellElement td;
+    String col;
 
     for (int y = 0; y < 16; y++) {
       program = program + "\r\n$lineno DATA ";
       for (int i = 0; i < 32; i++) {
         td = Designer.editor.editorGrid.cell(i, y);
-
-        String col = td.style.backgroundColor;
-
+        col = td.style.backgroundColor;
         program += colorChar[col];
         if (i != 31) program = program + ",";
       }
