@@ -43,9 +43,10 @@ class Editor {
     window.onKeyDown.listen((KeyboardEvent e) {
       String event = e.ctrlKey ? EventNames.BackChange : EventNames.ForeChange;
       if (e.keyCode > 48 && e.keyCode < 58) {
-        AppEvents.bus.post(event, () {
-          return e.keyCode - 49;
-        });
+        AppEvents.bus.post(event, () => e.keyCode - 49);
+      } else if (blockKeys.contains(e.keyCode)) {
+        AppEvents.bus
+            .post(EventNames.BlockChange, () => blockKeys.indexOf(e.keyCode));
       }
     });
   }

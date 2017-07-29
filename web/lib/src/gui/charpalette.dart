@@ -16,12 +16,7 @@ class CharPalette {
     palette..build(parent);
     palette.all.forEach(setBackground);
 
-    AppEvents.bus.subscribe(changeEventName, (Function dataProvider) {
-      print(changeEventName + "CP");
-      foregroundCells.forEach((TableCellElement tce) {
-        tce.style.backgroundColor = Colors[dataProvider()];
-      });
-    });
+    subscribeToEvents();
 
     for (int i = 0; i < 16; i++) {
       TableBuilder ic = new TableBuilder(2, 2);
@@ -30,6 +25,21 @@ class CharPalette {
       chars.add(ic);
       setBlockCharacter(ic, pattern[i]);
     }
+  }
+
+  void subscribeToEvents() {
+    AppEvents.bus.subscribe(changeEventName, (Function dataProvider) {
+      print(changeEventName + "CP");
+      foregroundCells.forEach((TableCellElement tce) {
+        tce.style.backgroundColor = Colors[dataProvider()];
+      });
+    });
+
+    AppEvents.bus.subscribe(EventNames.BlockChange, (Function dataprovider) {
+      palette.all[Designer.characterIndex].style.border = '';
+      Designer.characterIndex = dataprovider();
+      palette.all[Designer.characterIndex].style.border = '2px solid yellow';
+    });
   }
 
   void setBlockCharacter(TableBuilder chars, String block) {

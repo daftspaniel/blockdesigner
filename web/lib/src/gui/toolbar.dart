@@ -1,11 +1,11 @@
-import '../dragon.dart';
-import 'charpalette.dart';
 import 'dart:html';
 import '../designer.dart';
 import '../events.dart';
+import '../dragon.dart';
+import '../util/tablebuilder.dart';
+import 'charpalette.dart';
 import 'gui.dart';
 import 'palette.dart';
-import '../util/tablebuilder.dart';
 
 class Toolbar {
   final TableBuilder layout = new TableBuilder(5, 1);
@@ -103,12 +103,19 @@ class Toolbar {
 
   void helpHandler() {
     DivElement helpbox = createUIBox();
-    helpbox
-      ..innerHtml = "<h1>Help</h1>"
-      ..innerHtml += "<p>Press keys 1-9 to change Foreground Color.</p>"
-      ..innerHtml += "<p>Left Mouse Button : Foreground.</p>"
-      ..innerHtml += "<p>Right Mouse Button : Background.</p>"
-      ..innerHtml += "<p>Hold Mouse Buttons to paint multiple blocks.</p>";
+    helpbox.style.height = "100%";
+    String helpText = "<h1>Help</h1>";
+    helpText += "<p>Press keys 1-9 to change Foreground Color.</p>";
+    helpText += "<p>Left Mouse Button : Foreground.</p>";
+    helpText += "<p>Right Mouse Button : Background.</p>";
+    helpText += "<p>Hold Mouse Buttons to paint multiple blocks.</p>";
+    helpText += "<p>Select block shapes press 'QWERTYUIOPASDFGH'.</p>";
+    helpText += "<h1>Retro Links</h1>";
+    helpText +=
+        '<p><a target="_blank" href="http://cocobotomy.roust-it.dk/sgedit/">Cocobotomy Screen Designer</a> - similar tool a much more authentic look!</p>';
+    helpText += "";
+
+    helpbox.setInnerHtml(helpText, treeSanitizer: new NullTreeSanitizer());
 
     addCloseButton(helpbox);
     document.body.append(helpbox);
@@ -150,4 +157,8 @@ class Toolbar {
 
     return progstart + program + progend;
   }
+}
+
+class NullTreeSanitizer implements NodeTreeSanitizer {
+  void sanitizeTree(Node node) {}
 }

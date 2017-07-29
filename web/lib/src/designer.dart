@@ -3,6 +3,9 @@ import 'editor.dart';
 import 'events.dart';
 
 class Designer {
+  static Editor editor;
+  static int character = 0;
+  static int characterIndex = 0;
   static int color = 0;
   static int colorBack = 1;
   static bool gridDisplayed = false;
@@ -16,13 +19,7 @@ class Designer {
     AppEvents.bus.subscribe(EventNames.BackChange, setBack);
   }
 
-  static void setFore(Function dataProvider) {
-    color = dataProvider();
-  }
+  static void setFore(Function dataProvider) => color = dataProvider();
 
-  static void setBack(Function dataProvider) {
-    colorBack = dataProvider();
-  }
-
-  static Editor editor;
+  static void setBack(Function dataProvider) => colorBack = dataProvider();
 }
