@@ -146,14 +146,12 @@ class Toolbar {
     String program = "";
     int lineno = 5000;
     TableCellElement td;
-    String col;
 
     for (int y = 0; y < 16; y++) {
       program = program + "\r\n$lineno DATA ";
       for (int i = 0; i < 32; i++) {
         td = Designer.editor.editorGrid.cell(i, y);
-        col = td.style.backgroundColor;
-        program += colorChar[col];
+        program += td.text;
         if (i != 31) program = program + ",";
       }
       lineno = lineno + 10;

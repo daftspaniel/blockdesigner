@@ -16,8 +16,7 @@ class Editor {
     buildMainGrid(screenBorder);
     toolbar.build(parent, clearScreen, toggleGrid);
 
-    parent
-      ..append(screenBorder);
+    parent..append(screenBorder);
   }
 
   void buildScreenBorder() {
@@ -60,28 +59,36 @@ class Editor {
 
   void mouseEventsHandler(int x, int y, TableCellElement tc) {
     tc.onClick.listen((MouseEvent e) {
-      tc.style.backgroundColor = Colors[Designer.color];
+      setBlockValue(tc, Designer.color);
     });
+
     tc.onContextMenu.listen((MouseEvent e) {
-      tc.style.backgroundColor = Colors[Designer.colorBack];
+      setBlockValue(tc, Designer.colorBack);
       e.preventDefault();
     });
+
     tc.onMouseEnter.listen((MouseEvent e) {
-      if (e.buttons == 1) {
-        tc.style.backgroundColor = Colors[Designer.color];
-        tc.text = "128";
-      } else if (e.buttons == 2) {
-        tc.style.backgroundColor = Colors[Designer.colorBack];
-      }
+      int color = e.buttons == 1 ? Designer.color : Designer.colorBack;
+      setBlockValue(tc, color);
       e.preventDefault();
     });
   }
 
+  void setBlockValue(TableCellElement tc, int colorIndex) {
+    int color = colorIndex - 1;
+    if (color < 0) color = 0;
+    tc.text = "${blockBaseValues[Designer.characterIndex] + color * 16}";
+    tc.style.backgroundColor = Colors[colorIndex];
+    print(tc.text);
+  }
+
   void setTile(int x, int y, TableCellElement tc) {
-    tc.title = "@${x + y * 32} [$x $y]";
-    tc.style.width = "12px";
-    tc.style.height = "24px";
-    tc.style.fontSize = "0px";
+    tc
+      ..title = "@${x + y * 32} [$x $y]"
+      ..style.width = "12px"
+      ..style.height = "24px"
+      ..style.fontSize = "0px"
+      ..text = "143";
   }
 
   void toggleGrid() {

@@ -38,7 +38,7 @@ class CharPalette {
     });
 
     AppEvents.bus.subscribe(EventNames.BlockChange, (Function dataprovider) {
-      palette.all[Designer.characterIndex].style.border = '';
+      resetHighlighting();
       Designer.characterIndex = dataprovider();
       highlightSelection();
     });
@@ -60,6 +60,17 @@ class CharPalette {
     tce.style.backgroundColor = onOff == "1" ? '#00ff00' : '#000000';
     tce.style.width = "10px";
     tce.style.height = "15px";
+    tce.tabIndex = index;
+
+    tce.onClick.listen((MouseEvent e) {
+      resetHighlighting();
+      Designer.characterIndex = tce.tabIndex;
+      highlightSelection();
+    });
+  }
+
+  void resetHighlighting() {
+    palette.all[Designer.characterIndex].style.border = '';
   }
 
   setBackground(TableCellElement tce) {
