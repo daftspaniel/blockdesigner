@@ -1,4 +1,4 @@
-# This app has been superceded by SGEDITREMIX and will not be progressed
+# This app has been superceded by SGEDITREMIX and so will not be developed further.
 
 https://github.com/daftspaniel/sgeditremix
 
